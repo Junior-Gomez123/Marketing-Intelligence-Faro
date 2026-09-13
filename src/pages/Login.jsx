@@ -55,7 +55,7 @@ export default function Login() {
           <span style={{ fontWeight: 700, fontSize: "18px", color: "var(--text-h)" }}>Faro</span>
         </div>
 
-        <h1 style={{ margin: 0, fontSize: "20px", color: "var(--text-h)" }}>Iniciar sesion</h1>
+        <h1 style={{ margin: 0, fontSize: "20px", color: "var(--text-h)" }}>Iniciar sesión en Faro</h1>
 
         <label style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "14px" }}>
           Email
