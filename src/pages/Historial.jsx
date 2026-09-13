@@ -419,7 +419,10 @@ export default function Historial() {
           <div className="title-block">
             <BrandMark size={40} />
             <div>
-              <h1>Reporte de actividad en LinkedIn</h1>
+              <h1>
+                Reporte de actividad en LinkedIn
+                {currentCustomer ? ` para ${currentCustomer.companyName}` : ""}
+              </h1>
               <div className="subtitle">Generado el {today}</div>
             </div>
           </div>
