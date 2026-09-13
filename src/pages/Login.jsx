@@ -85,7 +85,7 @@ export default function Login() {
           type="submit"
           disabled={loading}
           style={{
-            background: "var(--accent-solid)",
+            background: "var(--success-solid)",
             color: "#fff",
             border: "none",
             borderRadius: "8px",

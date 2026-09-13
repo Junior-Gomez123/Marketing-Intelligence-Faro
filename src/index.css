@@ -132,3 +132,24 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* Inputs de marca: bordes redondeados + verde esmeralda */
+input:not([type='checkbox']):not([type='radio']):not([type='file']),
+select,
+textarea {
+  font: inherit;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1.5px solid var(--success);
+  border-radius: 40px;
+  padding: 8px 16px;
+  box-sizing: border-box;
+}
+
+input:not([type='checkbox']):not([type='radio']):not([type='file']):focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--success-solid);
+  box-shadow: 0 0 0 3px var(--success-bg);
+}

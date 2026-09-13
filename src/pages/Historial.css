@@ -88,9 +88,9 @@
 .metric-form-row select,
 .metric-form-row input[type="text"],
 .metric-form-row input[type="date"] {
-  padding: 7px 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  padding: 7px 14px;
+  border: 1.5px solid var(--success);
+  border-radius: 40px;
   background: var(--bg);
   color: var(--text-h);
   font-size: 13.5px;
@@ -110,9 +110,9 @@
   flex: 1 1 120px;
 }
 .metric-form-row input[type="number"] {
-  padding: 7px 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  padding: 7px 14px;
+  border: 1.5px solid var(--success);
+  border-radius: 40px;
   background: var(--bg);
   color: var(--text-h);
   font-size: 13.5px;
