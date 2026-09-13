@@ -1,13 +1,19 @@
 import axios from "axios";
 
+// En local no hace falta configurar nada (cae en localhost:4000). En Vercel,
+// definí VITE_API_BASE_URL en las Environment Variables del proyecto del
+// frontend con la URL del backend desplegado, por ejemplo:
+// https://marketing-intelligence-faro-backend.vercel.app
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+
 // El backend monta estas rutas en la raiz ("/linkedin"), no bajo "/api"
 // (ver backend/server.js), asi que usamos una instancia propia.
 const linkedinApi = axios.create({
-  baseURL: "http://localhost:4000/linkedin",
+  baseURL: `${API_BASE}/linkedin`,
 });
 
 export function getLoginUrl() {
-  return "http://localhost:4000/linkedin/login";
+  return `${API_BASE}/linkedin/login`;
 }
 
 export async function uploadExport(file) {
