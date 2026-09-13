@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import BrandMark from "../components/BrandMark";
 
-export default function Login() {
-  const { login } = useAuth();
+export default function Register() {
+  const { register } = useAuth();
   const navigate = useNavigate();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -15,12 +16,18 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
+    if (password.length < 8) {
+      setError("La contraseña debe tener al menos 8 caracteres.");
+      return;
+    }
+
     setLoading(true);
     try {
-      await login(email, password);
+      await register(name, email, password);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.error || "No se pudo iniciar sesion.");
+      setError(err.response?.data?.error || "No se pudo crear la cuenta.");
     } finally {
       setLoading(false);
     }
@@ -55,7 +62,17 @@ export default function Login() {
           <span style={{ fontWeight: 700, fontSize: "18px", color: "var(--text-h)" }}>Faro</span>
         </div>
 
-        <h1 style={{ margin: 0, fontSize: "20px", color: "var(--text-h)" }}>Iniciar sesion</h1>
+        <h1 style={{ margin: 0, fontSize: "20px", color: "var(--text-h)" }}>Crear cuenta</h1>
+
+        <label style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "14px" }}>
+          Nombre
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoComplete="name"
+          />
+        </label>
 
         <label style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "14px" }}>
           Email
@@ -73,9 +90,10 @@ export default function Login() {
           <input
             type="password"
             required
+            minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
+            autoComplete="new-password"
           />
         </label>
 
@@ -85,7 +103,7 @@ export default function Login() {
           type="submit"
           disabled={loading}
           style={{
-            background: "var(--accent-solid)",
+            background: "var(--success-solid)",
             color: "#fff",
             border: "none",
             borderRadius: "8px",
@@ -95,11 +113,11 @@ export default function Login() {
             cursor: "pointer",
           }}
         >
-          {loading ? "Ingresando..." : "Ingresar"}
+          {loading ? "Creando cuenta..." : "Crear cuenta"}
         </button>
 
         <p style={{ fontSize: "14px", textAlign: "center", margin: 0, color: "var(--text)" }}>
-          ¿No tenes cuenta? <Link to="/register">Creá una</Link>
+          ¿Ya tenes cuenta? <Link to="/login">Iniciá sesion</Link>
         </p>
       </form>
     </div>

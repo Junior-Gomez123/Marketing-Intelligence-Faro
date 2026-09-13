@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import BrandMark from "../components/BrandMark";
+import { useAuth } from "../context/AuthContext";
 import {
   uploadExport,
   getActivity,
@@ -65,6 +67,9 @@ function formatStat(value, suffix = "") {
 }
 
 export default function Historial() {
+  const { currentCustomerId, customers } = useAuth();
+  const currentCustomer = customers.find((c) => c._id === currentCustomerId);
+
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState(null);
@@ -87,10 +92,11 @@ export default function Historial() {
   const [metricError, setMetricError] = useState(null);
 
   const loadActivity = async (type = filter) => {
+    if (!currentCustomerId) return;
     setLoading(true);
     setLoadError(null);
     try {
-      const data = await getActivity({ type, limit: 50 });
+      const data = await getActivity(currentCustomerId, { type, limit: 50 });
       setItems(data.items);
       setTotal(data.total);
     } catch (err) {
@@ -103,10 +109,11 @@ export default function Historial() {
   };
 
   const loadRecommendations = async () => {
+    if (!currentCustomerId) return;
     setRecoLoading(true);
     setRecoError(null);
     try {
-      const data = await getRecommendations();
+      const data = await getRecommendations(currentCustomerId);
       setReco(data);
     } catch (err) {
       setRecoError(err.response?.data?.error || "No se pudieron generar las recomendaciones.");
@@ -116,8 +123,9 @@ export default function Historial() {
   };
 
   const loadPostOptions = async () => {
+    if (!currentCustomerId) return;
     try {
-      const data = await getActivity({ type: "post", limit: 100 });
+      const data = await getActivity(currentCustomerId, { type: "post", limit: 100 });
       setPostOptions(data.items);
     } catch {
       setPostOptions([]);
@@ -125,8 +133,9 @@ export default function Historial() {
   };
 
   const loadMetrics = async () => {
+    if (!currentCustomerId) return;
     try {
-      const data = await getPostMetrics();
+      const data = await getPostMetrics(currentCustomerId);
       setMetrics(data.items);
     } catch {
       setMetrics([]);
@@ -136,24 +145,25 @@ export default function Historial() {
   useEffect(() => {
     loadActivity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [filter, currentCustomerId]);
 
   useEffect(() => {
     loadRecommendations();
     loadPostOptions();
     loadMetrics();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentCustomerId]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    if (!file) return;
+    if (!file || !currentCustomerId) return;
 
     setUploading(true);
     setUploadError(null);
     setUploadResult(null);
 
     try {
-      const result = await uploadExport(file);
+      const result = await uploadExport(currentCustomerId, file);
       setUploadResult(result.summary);
       await loadActivity();
       await loadRecommendations();
@@ -185,12 +195,13 @@ export default function Historial() {
 
   const handleSaveMetric = async (e) => {
     e.preventDefault();
+    if (!currentCustomerId) return;
     setSavingMetric(true);
     setMetricError(null);
 
     try {
       const selectedPost = postOptions.find((p) => p._id === metricForm.postSelection);
-      await createPostMetric({
+      await createPostMetric(currentCustomerId, {
         postLink: selectedPost ? selectedPost.link : metricForm.postLink,
         postLabel: metricForm.postLabel,
         postDate: metricForm.postDate || null,
@@ -212,7 +223,8 @@ export default function Historial() {
   };
 
   const handleDeleteMetric = async (id) => {
-    await deletePostMetric(id);
+    if (!currentCustomerId) return;
+    await deletePostMetric(currentCustomerId, id);
     await loadMetrics();
     await loadRecommendations();
   };
@@ -225,8 +237,27 @@ export default function Historial() {
 
   const hasPostMetrics = reco?.metrics?.postMetricsCount > 0;
 
+  if (!currentCustomerId) {
+    return (
+      <div className="historial-page">
+        <h2>Elegi un cliente</h2>
+        <p className="intro-text">
+          Todavia no seleccionaste ni creaste ningun cliente. Anda al dashboard para elegir uno o
+          crear el primero.
+        </p>
+        <Link to="/dashboard">Ir al dashboard</Link>
+      </div>
+    );
+  }
+
   return (
     <div className="historial-page">
+      {currentCustomer && (
+        <p className="intro-text no-print" style={{ marginTop: 0 }}>
+          Reporte de <strong>{currentCustomer.companyName}</strong>
+        </p>
+      )}
+
       <h2>Importar tu historial de LinkedIn</h2>
       <p className="intro-text no-print">
         Descarga tu export desde LinkedIn (Configuracion y privacidad → Obtener una copia de tus datos)
