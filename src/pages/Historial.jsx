@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import BrandMark from "../components/BrandMark";
+import PostSuggestion from "../components/PostSuggestion";
 import { useAuth } from "../context/AuthContext";
 import {
   uploadExport,
@@ -489,6 +490,8 @@ export default function Historial() {
           </>
         )}
       </div>
+
+      <PostSuggestion customerId={currentCustomerId} />
 
       <h2 className="no-print">Timeline</h2>
       <div className="filters-row no-print">

@@ -344,6 +344,85 @@
   color: var(--accent);
 }
 
+/* --- Sugerencia de proximo post + publicar en LinkedIn --- */
+.linkedin-publish {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 28px;
+}
+.linkedin-connect-box .intro-text {
+  margin-bottom: 12px;
+}
+.linkedin-connect-btn {
+  background: var(--success-solid);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.linkedin-connect-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.linkedin-connected-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: var(--text);
+}
+.linkedin-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.linkedin-connected-row .link-btn {
+  margin-left: auto;
+}
+.linkedin-suggestion-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.suggestion-angle {
+  font-size: 13.5px;
+  color: var(--text);
+}
+.suggestion-textarea {
+  width: 100%;
+  min-height: 160px;
+  font-size: 14px;
+  line-height: 145%;
+  resize: vertical;
+}
+.suggestion-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.publish-btn {
+  background: var(--success-solid);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.publish-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.success-text {
+  color: var(--success-solid);
+  font-size: 14px;
+}
+
 /* --- Reporte imprimible (PDF via navegador) --- */
 @media print {
   body * {

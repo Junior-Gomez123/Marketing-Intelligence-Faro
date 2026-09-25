@@ -63,8 +63,31 @@ export async function deletePostMetric(customerId, id) {
   return data;
 }
 
-// El flujo de "Conectar con LinkedIn" (OAuth) sigue siendo un tema aparte, sin
-// atar todavia a un cliente especifico.
-export function getLoginUrl() {
-  return `${API_BASE}/linkedin/login`;
+// Conectar la cuenta de LinkedIn del cliente. El backend devuelve la URL de
+// autorizacion como JSON (en vez de redirigir el mismo) para que el pedido
+// pueda llevar el Authorization: Bearer normal -- el redirect real del
+// navegador lo hacemos aca, con window.location.href.
+export async function getLinkedinConnectUrl(customerId) {
+  const { data } = await api.get(customerPath(customerId, "/linkedin/connect-url"));
+  return data;
+}
+
+export async function getLinkedinStatus(customerId) {
+  const { data } = await api.get(customerPath(customerId, "/linkedin/status"));
+  return data;
+}
+
+export async function disconnectLinkedin(customerId) {
+  const { data } = await api.delete(customerPath(customerId, "/linkedin"));
+  return data;
+}
+
+export async function publishLinkedinPost(customerId, text) {
+  const { data } = await api.post(customerPath(customerId, "/linkedin/publish"), { text });
+  return data;
+}
+
+export async function getPostSuggestion(customerId) {
+  const { data } = await api.get(customerPath(customerId, "/suggestions/post"));
+  return data;
 }
